@@ -13,7 +13,7 @@
         
         /* App Store Style Navigation Grid Layout */
         .app-nav-bar { display: flex; gap: 15px; width: 100%; max-width: 750px; margin-bottom: 25px; box-sizing: border-box; }
-        .nav-card { flex: 1; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.2s ease; }
+        .nav-card { flex: 1; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
         .nav-card:hover { border-color: #58a6ff; background: #1c2128; transform: translateY(-2px); }
         .nav-card.active { border-color: #58a6ff; background: #1f242c; box-shadow: 0 0 12px rgba(88, 166, 255, 0.2); }
         .nav-card h3 { margin: 0 0 5px; color: #c9d1d9; font-size: 16px; }
@@ -66,11 +66,11 @@
 
     <!-- Application Selection Navigation Card Bar Layout -->
     <div class="app-nav-bar" id="navigationBar">
-        <div class="nav-card active" onclick="switchApp('resume-matcher')">
+        <div class="nav-card active" onclick="switchApp('resume-matcher', this)">
             <h3>📝 App 1</h3>
             <p>Global Resume Optimizer</p>
         </div>
-        <div class="nav-card" onclick="switchApp('skill-analyzer')">
+        <div class="nav-card" onclick="switchApp('skill-analyzer', this)">
             <h3>📊 App 2</h3>
             <p>AI Job Skill Gap Analyzer</p>
         </div>
@@ -145,6 +145,6 @@
     <script>
         // System Operation Variable Matrix State Setup
         let remainingScans = parseInt(localStorage.getItem('suite_scans_left')) || 3;
-        updateDashboardCounterDisplay();
+       updateDashboardCounterDisplay();
 
-        // Central Dynamic Window Switching Algorithm
+
