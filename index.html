@@ -7,20 +7,20 @@
     <style>
         /* Base Global Styling Modern Matrix */
         body { background: #0d1117; color: #c9d1d9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .dashboard-banner { text-align: center; margin-bottom: 20px; width: 100%; max-width: 750px; }
+        .dashboard-banner { text-align: center; margin-bottom: 20px; width: 100%; max-width: 850px; }
         .dashboard-banner h1 { color: #58a6ff; font-size: 28px; margin: 0; }
         .dashboard-banner p { color: #8b949e; margin: 5px 0 15px; font-size: 14px; }
         
         /* App Store Style Navigation Grid Layout */
-        .app-nav-bar { display: flex; gap: 15px; width: 100%; max-width: 750px; margin-bottom: 25px; box-sizing: border-box; }
-        .nav-card { flex: 1; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
+        .app-nav-bar { display: flex; gap: 12px; width: 100%; max-width: 850px; margin-bottom: 25px; box-sizing: border-box; flex-wrap: wrap; }
+        .nav-card { flex: 1; min-width: 180px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
         .nav-card:hover { border-color: #58a6ff; background: #1c2128; transform: translateY(-2px); }
         .nav-card.active { border-color: #58a6ff; background: #1f242c; box-shadow: 0 0 12px rgba(88, 166, 255, 0.2); }
-        .nav-card h3 { margin: 0 0 5px; color: #c9d1d9; font-size: 16px; }
+        .nav-card h3 { margin: 0 0 5px; color: #c9d1d9; font-size: 15px; }
         .nav-card p { margin: 0; color: #8b949e; font-size: 11px; }
 
         /* Global Structural Core Workspace Panel */
-        .app-viewport { max-width: 750px; width: 100%; background: #161b22; padding: 30px; border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 8px 24px rgba(0,0,0,0.5); box-sizing: border-box; position: relative; }
+        .app-viewport { max-width: 850px; width: 100%; background: #161b22; padding: 30px; border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 8px 24px rgba(0,0,0,0.5); box-sizing: border-box; position: relative; }
         .app-window { display: none; }
         .app-window.active { display: block; }
         
@@ -36,6 +36,11 @@
         .score-output { font-size: 24px; font-weight: bold; color: #2ea043; margin: 10px 0; text-shadow: 0 0 10px rgba(46, 160, 67, 0.2); }
         .error-list { color: #f85149; padding-left: 20px; line-height: 1.6; }
 
+        /* Accordion Panel Elements for Flashcards */
+        .flashcard { background: #161b22; border: 1px solid #30363d; border-radius: 6px; margin-bottom: 12px; overflow: hidden; }
+        .flashcard-q { background: #21262d; padding: 15px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; font-size: 14px; }
+        .flashcard-a { padding: 15px; background: #0d1117; display: none; border-top: 1px solid #30363d; font-size: 14px; color: #8b949e; line-height: 1.5; }
+
         /* Universal Sticky Header Session Tracker */
         .global-badge { background: #21262d; border: 1px solid #30363d; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; }
         .badge-count { color: #ffa657; font-weight: bold; }
@@ -48,7 +53,7 @@
         .pay-btn:hover { background: #2ea043; }
 
         /* visible Enterprise Branding Properties Footer */
-        footer { margin-top: 50px; padding: 20px; color: #666; font-size: 12px; text-align: center; width: 100%; max-width: 750px; border-top: 1px solid #21262d; box-sizing: border-box; }
+        footer { margin-top: 50px; padding: 20px; color: #666; font-size: 12px; text-align: center; width: 100%; max-width: 850px; border-top: 1px solid #21262d; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -64,7 +69,7 @@
         ⚙️ System Session Limits Remaining: <span class="badge-count" id="suiteCounter">3 / 3 Scans</span>
     </div>
 
-    <!-- Application Selection Navigation Card Bar Layout -->
+    <!-- 4-Utility Navigation Ribbon Card Layout -->
     <div class="app-nav-bar" id="navigationBar">
         <div class="nav-card active" onclick="switchApp('resume-matcher', this)">
             <h3>📝 App 1</h3>
@@ -73,6 +78,14 @@
         <div class="nav-card" onclick="switchApp('skill-analyzer', this)">
             <h3>📊 App 2</h3>
             <p>AI Job Skill Gap Analyzer</p>
+        </div>
+        <div class="nav-card" onclick="switchApp('privacy-shield', this)">
+            <h3>🔒 App 3</h3>
+            <p>Confidential Privacy Shield</p>
+        </div>
+        <div class="nav-card" onclick="switchApp('interview-prep', this)">
+            <h3>🎯 App 4</h3>
+            <p>AI Interview Flashcards</p>
         </div>
     </div>
 
@@ -112,7 +125,7 @@
             </select>
 
             <label for="userSkillsToken">Enter Your Current Technical Competencies (Comma Separated)</label>
-            <textarea id="userSkillsToken" placeholder="e.g., sql, excel, html, git, css"></textarea>
+            <textarea id="userSkillsToken" placeholder="e.g., sql, excel, python, pandas, tableau, power bi, statistics"></textarea>
 
             <button class="action-btn" onclick="executeSkillGapAnalysis()">Identify Missing Competencies</button>
             
@@ -124,141 +137,9 @@
             </div>
         </div>
 
-        <!-- ================= HARDWARE CLOUD SECURE PAYWALL BLOCKER LAYER ================= -->
-        <div id="premiumPaywall">
-            <div class="paywall-title">🛑 Trial Access Ceiling Triggered</div>
-            <p style="color:#8b949e; margin:0; font-size:14px;">You have exhausted all 3 configuration scan tokens across the Pawar Cloud Developer Workspace suite.</p>
-            <div class="pricing-tag">₹199 / One-Time Pass</div>
-            <p style="color:#ffa657; font-size:13px; font-weight:bold; margin:-5px 0 20px;">Unlock unlimited dashboard instances, Python analytics access, and global tracking tools instantly.</p>
-            <a href="https://rzp.io" target="_blank" class="pay-btn">Unlock Full Enterprise Cloud Access</a>
-        </div>
-
-    </div>
-
-    <!-- visible Intellectual Property Branding Panel Elements -->
-    <footer>
-        <p>© 2026 Krishnapawar1610 Cloud. All Rights Reserved. Protected by International Code Security Log Matrices.</p>
-        <p style="color: #58a6ff; font-weight: bold; margin-top: 5px; font-size:13px;">Designed & Engineered Globally by Independent Software Architect Krishna Pawar</p>
-    </footer>
-
-    <!-- Comprehensive Computational Logic Processing Core JavaScript Script -->
-    <script>
-        // System Operation Variable Matrix State Setup
-        let remainingScans = parseInt(localStorage.getItem('suite_scans_left')) || 3;
-        updateDashboardCounterDisplay();
-
-    // Central Unlocked Tab Switching Function
-    function switchApp(targetAppId, element) {
-        // Remove active highlights from navigation nodes
-        document.querySelectorAll('.app-nav-bar .nav-card').forEach(card => card.classList.remove('active'));
-        document.querySelectorAll('.app-window').forEach(window => window.classList.remove('active'));
-        
-        // Apply structural active tags to selected app elements safely
-        const targetedWindow = document.getElementById(targetAppId);
-        if (targetedWindow) {
-            targetedWindow.classList.add('active');
-        }
-        if (element) {
-            element.classList.add('active');
-        }
-    }
-
-    // Global Counter Tracking Decrement Node
-    function processScanAction() {
-        remainingScans--;
-        localStorage.setItem('suite_scans_left', remainingScans);
-        updateDashboardCounterDisplay();
-
-        if (remainingScans <= 0) {
-            // Execute hardware lockdown logic array
-            document.getElementById('resume-matcher').classList.remove('active');
-            document.getElementById('skill-analyzer').classList.remove('active');
-            const navBar = document.getElementById('navigationBar');
-            if (navBar) {
-                navBar.style.opacity = '0.2';
-                navBar.style.pointerEvents = 'none';
-            }
-            document.getElementById('premiumPaywall').style.display = 'block';
-        }
-    }
-
-    function updateDashboardCounterDisplay() {
-        const counterElement = document.getElementById('suiteCounter');
-        if (counterElement) {
-            counterElement.innerText = `${remainingScans} / 3 Scans Remaining`;
-            if (remainingScans <= 1) {
-                counterElement.style.color = '#f85149';
-            }
-        }
-    }
-
-    // ================= APP 1 COMPUTED SYSTEM ENGINE LOGIC =================
-    function executeResumeMatching() {
-        const rText = document.getElementById('resumeText').value.toLowerCase();
-        const jText = document.getElementById('jobText').value.toLowerCase();
-
-        if (!rText || !jText) {
-            alert("Please fill in both input parameters to initialize string analysis tracking.");
-            return;
-        }
-
-        const cleanJobWords = jText.split(/\W+/).filter(w => w.length > 4);
-        let intersectionCount = 0;
-        const verifiedKeywords = [...new Set(cleanJobWords)];
-
-        verifiedKeywords.forEach(word => {
-            if (rText.includes(word)) intersectionCount++;
-        });
-
-        const matchRatio = verifiedKeywords.length > 0 ? Math.round((intersectionCount / verifiedKeywords.length) * 100) : 0;
-        
-        document.getElementById('matcherScore').innerText = `Calculated Matrix Match: ${matchRatio}%`;
-        document.getElementById('matcherResults').style.display = 'block';
-
-        processScanAction();
-    }
-
-    // ================= APP 2 COMPUTED SYSTEM ENGINE LOGIC =================
-    function executeSkillGapAnalysis() {
-        const targetRole = document.getElementById('jobRoleSelection').value;
-        const inputSkillsText = document.getElementById('userSkillsToken').value.toLowerCase();
-
-        if (!inputSkillsText) {
-            alert("Please declare current user qualifications string to activate database comparison.");
-            return;
-        }
-
-        const cleanSkillsList = inputSkillsText.split(',').map(s => s.trim()).filter(s => s.length > 0);
-
-        // Cloud Data Store Baseline Matrix
-        const databaseRepository = {
-            'Python Developer': ['python', 'django', 'flask', 'sql', 'git', 'docker', 'rest api'],
-            'Data Analyst': ['sql', 'excel', 'python', 'pandas', 'tableau', 'power bi', 'statistics'],
-            'Web Developer': ['html', 'css', 'javascript', 'react', 'node.js', 'git', 'mongodb']
-        };
-
-        const requiredSet = databaseRepository[targetRole];
-        const gapArray = requiredSet.filter(skill => !cleanSkillsList.includes(skill));
-        const performanceMetric = Math.round(((requiredSet.length - gapArray.length) / requiredSet.length) * 100);
-
-        document.getElementById('analyzerScore').innerText = `Core Matching Score: ${performanceMetric}%`;
-        const listDisplayElement = document.getElementById('analyzerMissingList');
-        listDisplayElement.innerHTML = '';
-
-        if (gapArray.length === 0) {
-            listDisplayElement.innerHTML = '<li style="color:#2ea043; list-style-type:none;">✓ Dynamic Overlap 100%! Your profile is verified ready for corporate recruitment parameters.</li>';
-        } else {
-            gapArray.forEach(competency => {
-                const node = document.createElement('li');
-                node.innerText = `Missing Standard Vector: ${competency.toUpperCase()}`;
-                listDisplayElement.appendChild(node);
-            });
-        }
-
-        document.getElementById('analyzerResults').style.display = 'block';
-
-        processScanAction();
-    }
-</script>
-</body>
-</html>
+        <!-- ================= APPLICATION 3 PANEL LAYER ================= -->
+        <div id="privacy-shield" class="app-window">
+            <h2 style="margin:0; color:#58a6ff; font-size:20px;">🔒 Confidential Privacy Shield</h2>
+            <p style="color:#8b949e; font-size:13px; margin:5px 0 0;">Automatically scrub out personal identity tracking parameters from your text documentation.</p>
+            
+            <label for="privacyInputText">Paste Raw Resume Content</label>
