@@ -40,7 +40,7 @@
         .global-badge { background: #21262d; border: 1px solid #30363d; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; }
         .badge-count { color: #ffa657; font-weight: bold; }
 
-        /* Secure Hardware Paywall Overlay Grid Architecture */
+        /* Secure Hardware Paywall Blocker Layer */
         #premiumPaywall { display: none; text-align: center; padding: 40px 20px; border: 2px dashed #f85149; border-radius: 8px; background: rgba(248, 81, 73, 0.03); }
         .paywall-title { color: #f85149; font-size: 22px; margin: 0 0 10px; font-weight: bold; }
         .pricing-tag { font-size: 32px; font-weight: bold; color: #ffffff; margin: 15px 0; }
@@ -146,15 +146,119 @@
         // System Operation Variable Matrix State Setup
         let remainingScans = parseInt(localStorage.getItem('suite_scans_left')) || 3;
         updateDashboardCounterDisplay();
+
+    // Central Unlocked Tab Switching Function
     function switchApp(targetAppId, element) {
-    // 1. Remove active highlights from all navigation nodes
-    document.querySelectorAll('.nav-card').forEach(card => card.classList.remove('active'));
-    document.querySelectorAll('.app-window').forEach(window => window.classList.remove('active'));
-    
-    // 2. Open the selected app panel instantly with zero restrictions
-    document.getElementById(targetAppId).classList.add('active');
-    if(element) element.classList.add('active');
-}
+        // Remove active highlights from navigation nodes
+        document.querySelectorAll('.app-nav-bar .nav-card').forEach(card => card.classList.remove('active'));
+        document.querySelectorAll('.app-window').forEach(window => window.classList.remove('active'));
+        
+        // Apply structural active tags to selected app elements safely
+        const targetedWindow = document.getElementById(targetAppId);
+        if (targetedWindow) {
+            targetedWindow.classList.add('active');
+        }
+        if (element) {
+            element.classList.add('active');
+        }
+    }
 
+    // Global Counter Tracking Decrement Node
+    function processScanAction() {
+        remainingScans--;
+        localStorage.setItem('suite_scans_left', remainingScans);
+        updateDashboardCounterDisplay();
 
+        if (remainingScans <= 0) {
+            // Execute hardware lockdown logic array
+            document.getElementById('resume-matcher').classList.remove('active');
+            document.getElementById('skill-analyzer').classList.remove('active');
+            const navBar = document.getElementById('navigationBar');
+            if (navBar) {
+                navBar.style.opacity = '0.2';
+                navBar.style.pointerEvents = 'none';
+            }
+            document.getElementById('premiumPaywall').style.display = 'block';
+        }
+    }
 
+    function updateDashboardCounterDisplay() {
+        const counterElement = document.getElementById('suiteCounter');
+        if (counterElement) {
+            counterElement.innerText = `${remainingScans} / 3 Scans Remaining`;
+            if (remainingScans <= 1) {
+                counterElement.style.color = '#f85149';
+            }
+        }
+    }
+
+    // ================= APP 1 COMPUTED SYSTEM ENGINE LOGIC =================
+    function executeResumeMatching() {
+        const rText = document.getElementById('resumeText').value.toLowerCase();
+        const jText = document.getElementById('jobText').value.toLowerCase();
+
+        if (!rText || !jText) {
+            alert("Please fill in both input parameters to initialize string analysis tracking.");
+            return;
+        }
+
+        const cleanJobWords = jText.split(/\W+/).filter(w => w.length > 4);
+        let intersectionCount = 0;
+        const verifiedKeywords = [...new Set(cleanJobWords)];
+
+        verifiedKeywords.forEach(word => {
+            if (rText.includes(word)) intersectionCount++;
+        });
+
+        const matchRatio = verifiedKeywords.length > 0 ? Math.round((intersectionCount / verifiedKeywords.length) * 100) : 0;
+        
+        document.getElementById('matcherScore').innerText = `Calculated Matrix Match: ${matchRatio}%`;
+        document.getElementById('matcherResults').style.display = 'block';
+
+        processScanAction();
+    }
+
+    // ================= APP 2 COMPUTED SYSTEM ENGINE LOGIC =================
+    function executeSkillGapAnalysis() {
+        const targetRole = document.getElementById('jobRoleSelection').value;
+        const inputSkillsText = document.getElementById('userSkillsToken').value.toLowerCase();
+
+        if (!inputSkillsText) {
+            alert("Please declare current user qualifications string to activate database comparison.");
+            return;
+        }
+
+        const cleanSkillsList = inputSkillsText.split(',').map(s => s.trim()).filter(s => s.length > 0);
+
+        // Cloud Data Store Baseline Matrix
+        const databaseRepository = {
+            'Python Developer': ['python', 'django', 'flask', 'sql', 'git', 'docker', 'rest api'],
+            'Data Analyst': ['sql', 'excel', 'python', 'pandas', 'tableau', 'power bi', 'statistics'],
+            'Web Developer': ['html', 'css', 'javascript', 'react', 'node.js', 'git', 'mongodb']
+        };
+
+        const requiredSet = databaseRepository[targetRole];
+        const gapArray = requiredSet.filter(skill => !cleanSkillsList.includes(skill));
+        const performanceMetric = Math.round(((requiredSet.length - gapArray.length) / requiredSet.length) * 100);
+
+        document.getElementById('analyzerScore').innerText = `Core Matching Score: ${performanceMetric}%`;
+        const listDisplayElement = document.getElementById('analyzerMissingList');
+        listDisplayElement.innerHTML = '';
+
+        if (gapArray.length === 0) {
+            listDisplayElement.innerHTML = '<li style="color:#2ea043; list-style-type:none;">✓ Dynamic Overlap 100%! Your profile is verified ready for corporate recruitment parameters.</li>';
+        } else {
+            gapArray.forEach(competency => {
+                const node = document.createElement('li');
+                node.innerText = `Missing Standard Vector: ${competency.toUpperCase()}`;
+                listDisplayElement.appendChild(node);
+            });
+        }
+
+        document.getElementById('analyzerResults').style.display = 'block';
+
+        processScanAction();
+    }
+</script>
+</body>
+</html>
